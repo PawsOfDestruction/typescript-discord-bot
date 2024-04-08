@@ -75,6 +75,9 @@ export function formatViews(num: number) {
  * @param {DisTube} distube
  */
 export const registerDisTubeEvents = (distube: DisTube) => {
+	distube.on('error', (_, e) => {
+		console.error('Distube error: ', e);
+	});
 	distube.on('addSong', (queue, song) => {
 		console.log('Add song event');
 		const songIndex = queue.songs.length;
