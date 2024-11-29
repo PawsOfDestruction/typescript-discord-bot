@@ -1,36 +1,15 @@
-import dotenv from 'dotenv';
-import { GatewayIntentBits } from 'discord.js';
 
-dotenv.config();
+const CONFIG = {
+    GUILD_ID: process.env.DISCORD_GUILD_ID!,
+    CLIENT_ID: process.env.DISCORD_CLIENT_ID!,
+    BOT_TOKEN: process.env.DISCORD_BOT_TOKEN!,
+} as const
 
-const { CLIENT_ID, GUILD_ID, DISCORD_TOKEN, MONGODB_URL, STEAM_PORT_REDIRECT_URL, EMBED_BANNER } =
-	process.env;
+Object.values(CONFIG).map(value => {
+    if (!value) {
+        throw new Error('Failed to load config', {cause: 'Missing env vars'})
+    }
+    return value;
+})
 
-function throwErrIfEnvironmentVarsAreMissing(environmentVars: NodeJS.ProcessEnv) {
-	Object.values(environmentVars).forEach((v) => {
-		if (!v) {
-			throw new Error('missing environment variables');
-		}
-	});
-}
-
-const config = {
-	CLIENT_ID: CLIENT_ID ?? '',
-	GUILD_ID: GUILD_ID ?? '',
-	DISCORD_TOKEN: DISCORD_TOKEN ?? '',
-	MONGODB_URL: MONGODB_URL ?? '',
-	STEAM_PORT_REDIRECT_URL: STEAM_PORT_REDIRECT_URL ?? '',
-	EMBED_BANNER: EMBED_BANNER ?? '',
-};
-
-throwErrIfEnvironmentVarsAreMissing(config);
-
-const BOT_INTENTS = [
-	GatewayIntentBits.Guilds,
-	GatewayIntentBits.GuildMembers,
-	GatewayIntentBits.GuildMessages,
-	GatewayIntentBits.DirectMessages,
-	GatewayIntentBits.GuildVoiceStates,
-];
-
-export { config, BOT_INTENTS };
+export {CONFIG};

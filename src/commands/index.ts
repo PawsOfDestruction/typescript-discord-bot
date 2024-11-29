@@ -1,31 +1,22 @@
-export * as ping from './ping';
+import fs from 'node:fs';
+import path from 'node:path';
 
-export * as help from './help';
+const commands = new Map<string, Object>();
 
-export * as reddit from './reddit';
+// Grab all the command folders from the commands directory you created earlier
+const foldersPath = __dirname;
+const commandFolders = fs.readdirSync(__dirname).filter(item => !item.includes('.'));
 
-export * as fisheye from './images/fisheye';
+for (const folder of commandFolders) {
+	const commandsPath = path.join(foldersPath, folder);
+	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.ts'));
 
-export * as rotate from './images/rotate';
+    for (const file of commandFiles) {		
+		const filePath = path.join(commandsPath, file);
+		const command = (await import(filePath));
+        commands.set(command.data.name, {...command});
+	}
+}
 
-export * as todo from './todo';
 
-export * as connect from './connect';
-
-export * as play from './music/play';
-
-export * as remove from './music/remove';
-
-export * as clear from './music/clear';
-
-export * as queue from './music/queue';
-
-export * as skip from './music/skip';
-
-export * as skipto from './music/skipto';
-
-export * as pause from './music/pause';
-
-export * as resume from './music/resume';
-
-export * as say from './say';
+export { commands };
