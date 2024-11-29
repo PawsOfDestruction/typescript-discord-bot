@@ -4,8 +4,8 @@
 	"description": "",
 	"main": "index.ts",
 	"scripts": {
-		"build": "tsc",
-		"start": "node build/index.js",
+		"build": "bun build ./src/index.ts --outdir ./build --minify --target=bun",
+		"start": "bun build/index.js",
 		"dev": "bun --watch ./src/index.ts",
 		"prettier:check": "prettier --check **/*.{ts,js,cjs,json,yaml}",
 		"prettier:format": "prettier --check **/*.{ts,js,cjs,json,yaml} --write",
@@ -33,7 +33,6 @@
 		"eslint-plugin-promise": "^6.0.0",
 		"eslint-plugin-unicorn": "^47.0.0",
 		"eslint-plugin-unused-imports": "^2.0.0",
-		"nodemon": "2.0.15",
 		"prettier": "^2.8.8"
 	}
 }
